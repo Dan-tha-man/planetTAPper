@@ -1,5 +1,7 @@
 #Description:
-planetTAPper can be used to search for a planet's attributes given its name.
+planetTAPper can be used to search for a planet's attributes given its name.  PlanetTAPper relies on the Table Access Protocol (TAP) and IVOA Astronomical Data Query Language, for more information see:
+    - https://www.ivoa.net/documents/TAP/
+    - https://www.ivoa.net/documents/ADQL/
 
 ## Installation Instructions:
 
