@@ -1,6 +1,14 @@
 import pyvo as vo
+import numpy as np
 
-service = vo.dal.TAPService("http://dc.g-vo.org/tap")
+tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 
-resultset = service.search("SELECT TOP 1 * FROM ivoa.obscore")
-print(resultset)
+ex_query = """
+    SELECT TOP 5
+    *
+    FROM pscomppars 
+    """
+result = tap_service.search(ex_query)
+
+print(result.to_table().colnames)
+print(np.array(result).shape)
