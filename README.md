@@ -1,4 +1,7 @@
-# Installation Instructions
+#Description:
+planetTAPper can be used to search for a planet's attributes given its name.
+
+## Installation Instructions:
 
 ```
 pip install pyvo
@@ -10,5 +13,5 @@ pip install astropy
 pip install requests
 ```
 
-## Requirements
+## Requirements:
 
