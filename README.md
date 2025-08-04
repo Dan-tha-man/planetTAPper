@@ -4,17 +4,14 @@ The planetTAPper package can be used to search for a planet's attributes given i
 
      https://www.ivoa.net/documents/ADQL/
 
-## Installation Instructions:
-
+## Requirements & Installation:
 ```
 pip install pyvo
 ```
-Additional Required Installations:
+The pyvo library requires affiliate libraries be installed
 ```
 pip install numpy
 pip install astropy
 pip install requests
 ```
-
-## Requirements:
 
