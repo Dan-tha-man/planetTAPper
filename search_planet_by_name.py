@@ -2,6 +2,7 @@ import pyvo as vo
 import numpy as np
 from celestialbodies import Planet, Star
 import astropy.units as u
+import pandas as pd
 
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
@@ -49,20 +50,20 @@ def search_planet_by_name(name, extras=[]):
 
 
     star = Star(name=df['hostname'],
-                mass=df['st_mass']*u.Msun if df['st_mass'] is not np.nan else None,
-                radius=df['st_rad']*u.Rsun if df['st_rad'] is not np.nan else None,
+                mass=df['st_mass']*u.Msun if not pd.isna(df['st_mass']) else None,
+                radius=df['st_rad']*u.Rsun if not pd.isna(df['st_rad']) else None,
                 spectype=df['st_spectype'],
-                teff=df['st_teff']*u.K if df['st_teff'] is not np.nan else None,
-                period=df['st_rotp']*u.day if df['st_rotp'] is not np.nan else None,
-                distance=df['sy_dist']*u.pc if df['sy_dist'] is not np.nan else None
+                teff=df['st_teff']*u.K if not pd.isna(df['st_teff']) else None,
+                period=df['st_rotp']*u.day if not pd.isna(df['st_rotp']) else None,
+                distance=df['sy_dist']*u.pc if not pd.isna(df['sy_dist']) else None
                 )
 
     planet = Planet(name=df['pl_name'], 
-                    mass=df['pl_massj']*u.Mjup if df['pl_massj'] is not np.nan else None,
-                    radius=df['pl_radj']*u.Rjup if df['pl_radj'] is not np.nan else None,
-                    period=df['pl_orbper']*u.day if df['pl_orbper'] is not np.nan else None,
-                    semi_major_axis=df['pl_orbsmax']*u.AU if df['pl_orbsmax'] is not np.nan else None,
-                    ecc=df['pl_orbeccen'] if df['pl_orbeccen'] is not np.nan else None,
+                    mass=df['pl_massj']*u.Mjup if not pd.isna(df['pl_massj']) else None,
+                    radius=df['pl_radj']*u.Rjup if not pd.isna(df['pl_radj']) else None,
+                    period=df['pl_orbper']*u.day if not pd.isna(df['pl_orbper']) else None,
+                    semi_major_axis=df['pl_orbsmax']*u.AU if not pd.isna(df['pl_orbsmax']) else None,
+                    ecc=df['pl_orbeccen'] if not pd.isna(df['pl_orbeccen']) else None,
                     host=star,
                     extra=extra_df.iloc[0]
                     )
