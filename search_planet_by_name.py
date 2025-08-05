@@ -20,11 +20,13 @@ def search_planet_by_name(name, extras=[]):
         WHERE pl_name = '{name}'
         """
     result = tap_service.search(ex_query).to_table()
-    planet = Planet(name=result['pl_name'][0], 
-                    period=result['pl_orbper'][0]*u.day,
-                    radius=result['pl_radj'][0]*u.Rjup,
-                    mass=result['pl_massj'][0]*u.Mjup,
-                    ecc=result['pl_orbeccen'][0],
+    df = result.to_pandas().iloc[0]
+    planet = Planet(name=df['pl_name'], 
+                    period=df['pl_orbper']*u.day if df['pl_orbper'] is not np.nan else None,
+                    radius=df['pl_radj']*u.Rjup if df['pl_radj'] is not np.nan else None,
+                    mass=df['pl_massj']*u.Mjup if df['pl_massj'] is not np.nan else None,
+                    ecc=df['pl_orbeccen'] if df['pl_orbeccen'] is not np.nan else None,
+                    extra=result
                     )
 
                 
@@ -34,4 +36,4 @@ if __name__ == "__main__":
     planet_name = "Kepler-334 b"
     kepler = search_planet_by_name(planet_name)
     print(kepler.name)
-    print(kepler.star.distance)
+    print(kepler.extra)
