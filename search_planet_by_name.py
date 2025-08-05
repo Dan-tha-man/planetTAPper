@@ -6,12 +6,22 @@ import astropy.units as u
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 
+#Column names are planet properties:
 default_columns = ['pl_name', 'pl_orbper', 'pl_radj', 'pl_massj', 
                    'pl_orbeccen', 'pl_orbsmax', 'hostname', 'st_spectype', 'st_teff', 
                    'st_rad', 'st_mass', 'st_rotp', 'sy_dist']
+                    #All: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
 def search_planet_by_name(name, extras=[]):
-    
+    """Searches for planet by name
+
+    Args:
+        name: Name of the planet
+        extras: Additional properties of the planet
+
+    Returns:
+        object: Returns an object from the planet class
+    """
     ex_query = f"""
         SELECT TOP 1
         {', '.join(default_columns)}
