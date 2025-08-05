@@ -3,14 +3,30 @@ import numpy as np
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 
-ex_query = """
-    SELECT TOP 5
-    pl_name, discoverymethod, pl_orbper,sy_dist
-    FROM pscomppars 
+
+# --- Inputs ---
+num_of_entries = 5
+table_name = "pscomppars"
+condition = "sy_dist BETWEEN 500 AND 10000"
+order_name = "sy_dist"
+
+# --- Options for Query ---
+# SELECT "insert number of entries"
+# FROM "insert table name"
+# WHERE "insert condition"
+# ORDER "insert column name to order by"
+
+ex_query = f"""
+    SELECT TOP {num_of_entries}
+    pl_name, discoverymethod, pl_orbper, sy_dist
+    FROM {table_name} 
+    WHERE {condition}
+    ORDER BY {order_name}
     """
+
 result = tap_service.search(ex_query)
 
+# --- Print Results of Query ---
 print(result.to_table().colnames)
 print(result.to_table())
 print(np.array(result).shape)
-print(result)
