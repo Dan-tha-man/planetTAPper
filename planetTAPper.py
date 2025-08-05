@@ -11,7 +11,7 @@ class Planet:
     period: Optional[u.Quantity] = None
     semi_major_axis: Optional[u.Quantity] = None
     ecc: Optional[float] = None
-    star: Optional['Star'] = None
+    host: Optional['Star'] = None
 
     extra: Table = field(default_factory=lambda: Table())
 
@@ -33,7 +33,7 @@ class Planet:
             raise u.UnitsError(f'Period must have units of time, got {self.period.unit}')
         if self.semi_major_axis is not None and not self.semi_major_axis.unit.is_equivalent(u.m):
             raise u.UnitsError(f'Semi-major axis must have units of distance, got {self.semi_major_axis.unit}')
-        if self.ecc is not None and not type(self.ecc) == float and 0 < self.ecc < 1:
+        if self.ecc is not None and not type(self.ecc) == float and not 0 < self.ecc < 1:
             raise ValueError(f'Eccentricity must be float between 0 and 1, got {self.ecc}')
 
 
@@ -46,11 +46,10 @@ class Star:
     name: str
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None
-    type: Optional[str] = None
-    temp: Optional[u.Quantity] = None
+    spectype: Optional[str] = None
+    teff: Optional[u.Quantity] = None
     period: Optional[u.Quantity] = None
     distance: Optional[u.Quantity] = None
-    extra: Dict[str, Any] = field(default_factory=dict)
 
     def __getitem__(self, key):
         return getattr(self, key, self.extra.get(key))
