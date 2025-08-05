@@ -4,7 +4,7 @@ import astropy.units as u
 
 @dataclass
 class Planet:
-    name: str
+    name: Optional[str] = None
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None
     period: Optional[u.Quantity] = None
