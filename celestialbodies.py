@@ -43,7 +43,31 @@ class Planet:
 
 
     def __str__(self):
-        return f'{self.name}'
+        # Planet main attributes
+        planet_attrs = [
+            f"Name: {self.name}",
+            f"Mass: {self.mass}" if self.mass is not None else "Mass: N/A",
+            f"Radius: {self.radius}" if self.radius is not None else "Radius: N/A",
+            f"Period: {self.period}" if self.period is not None else "Period: N/A",
+            f"Semi-major axis: {self.semi_major_axis}" if self.semi_major_axis is not None else "Semi-major axis: N/A",
+            f"Eccentricity: {self.ecc}" if self.ecc is not None else "Eccentricity: N/A",
+        ]
+        # Host star info
+        star_attrs = [
+            f"Name: {self.host.name}",
+            f"Mass: {self.host.mass}" if self.host.mass is not None else "Mass: N/A",
+            f"Radius: {self.host.radius}" if self.host.radius is not None else "Radius: N/A",
+            f"Spectral Type: {self.host.spectype}" if self.host.spectype is not None else "Spectral Type: N/A",
+            f"Teff: {self.host.teff}" if self.host.teff is not None else "Teff: N/A",
+            f"Period: {self.host.period}" if self.host.period is not None else "Period: N/A",
+            f"Distance: {self.host.distance}" if self.host.distance is not None else "Distance: N/A",
+        ]
+        star_section = "Star:\n  " + "\n  ".join(star_attrs)
+        # Extra data
+        return (
+            "Planet:\n  " + "\n  ".join(planet_attrs) + "\n" +
+            star_section + "\n"
+        )
 
 
 @dataclass
