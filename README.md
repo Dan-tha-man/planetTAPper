@@ -11,8 +11,6 @@ pip install pyvo
 ```
 The pyvo library requires affiliate libraries be installed
 ```
-pip install numpy
-pip install astropy
-pip install requests
+pip install numpy astropy requests
 ```
 
