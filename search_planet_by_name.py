@@ -74,7 +74,3 @@ if __name__ == "__main__":
     extras = ['ra', 'dec']
     kepler = search_planet_by_name(planet_name, extras)
     print(kepler)
-    print(kepler.period)
-    print(kepler.extra)
-    print(kepler.extra['ra'])
-
