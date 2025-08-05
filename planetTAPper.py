@@ -46,11 +46,10 @@ class Star:
     name: str
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None
-    type: Optional[str] = None
-    temp: Optional[u.Quantity] = None
+    spectype: Optional[str] = None
+    teff: Optional[u.Quantity] = None
     period: Optional[u.Quantity] = None
     distance: Optional[u.Quantity] = None
-    extra: Dict[str, Any] = field(default_factory=dict)
 
     def __getitem__(self, key):
         return getattr(self, key, self.extra.get(key))
