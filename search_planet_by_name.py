@@ -20,12 +20,14 @@ def search_planet_by_name(name, extras=[]):
         WHERE pl_name = '{name}'
         """
     result = tap_service.search(ex_query).to_table()
+    if len(result) == 0:
+        raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
     df = result.to_pandas().iloc[0]
 
     star = Star(name=df['hostname'],
                 mass=df['st_mass']*u.Msun if df['st_mass'] is not np.nan else None,
                 radius=df['st_rad']*u.Rsun if df['st_rad'] is not np.nan else None,
-                spectype=df['st_spectype']*u.Rsun if df['st_rad'] is not np.nan else None,
+                spectype=df['st_spectype'],
                 teff=df['st_teff']*u.K if df['st_teff'] is not np.nan else None,
                 period=df['st_rotp']*u.day if df['st_rotp'] is not np.nan else None,
                 distance=df['sy_dist']*u.pc if df['sy_dist'] is not np.nan else None
