@@ -13,4 +13,8 @@ The pyvo library requires affiliate libraries be installed
 ```
 pip install numpy astropy requests
 ```
+or install all required packages with 
+```
+pip install -r requirements.txt
+```
 
