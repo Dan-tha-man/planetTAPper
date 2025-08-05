@@ -16,7 +16,12 @@ class Planet:
     extra: Table = field(default_factory=lambda: Table())
 
     def __getitem__(self, key):
-        return getattr(self, key, self.extra.get(key))
+        if hasattr(self, key):
+            return getattr(self, key)
+        elif key in self.extra.colnames:
+            return self.extra[key][0]
+        else:
+            raise KeyError(f"{key} not found in Planet attributes or extras.")
     
     def __setitem__(self, key, value):
         if hasattr(self, key):

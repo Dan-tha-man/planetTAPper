@@ -1,6 +1,6 @@
 import pyvo as vo
 import numpy as np
-from planetTAPper import Planet, Star
+from celestialbodies import Planet, Star
 import astropy.units as u
 
 
@@ -29,10 +29,17 @@ def search_planet_by_name(name, extras=[]):
         FROM pscomppars
         WHERE pl_name = '{name}'
         """
+    
     result = tap_service.search(ex_query).to_table()
     if len(result) == 0:
         raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
     df = result.to_pandas().iloc[0]
+
+    extra_df = result.to_pandas()
+    for col in extra_df.columns:
+        if col not in extras:
+            extra_df.pop(col)
+
 
     star = Star(name=df['hostname'],
                 mass=df['st_mass']*u.Msun if df['st_mass'] is not np.nan else None,
@@ -50,14 +57,16 @@ def search_planet_by_name(name, extras=[]):
                     semi_major_axis=df['pl_orbsmax']*u.AU if df['pl_orbsmax'] is not np.nan else None,
                     ecc=df['pl_orbeccen'] if df['pl_orbeccen'] is not np.nan else None,
                     host=star,
-                    extra=result
+                    extra=extra_df.iloc[0]
                     )
-
-                
     return planet
 
 if __name__ == "__main__":
     planet_name = "Kepler-334 b"
-    kepler = search_planet_by_name(planet_name)
-    print(kepler.host.distance)
-    print(kepler.ecc)
+    extras = ['ra', 'dec']
+    kepler = search_planet_by_name(planet_name, extras)
+    print(kepler)
+    print(kepler.period)
+    print(kepler.extra)
+    print(kepler.extra['ra'])
+
