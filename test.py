@@ -5,7 +5,7 @@ from planetTAPper import Planet
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 
-def search(name):
+def search_planet_by_name(name):
     
     ex_query = f"""
         SELECT TOP 1
@@ -27,7 +27,7 @@ def search(name):
 
 search("Kepler-334 b")
 
-""" # --- Inputs ---
+# --- Inputs ---
 num_of_entries = 5
 column_names = "pl_name discoverymethod pl_orbper sy_dist"
 table_name = "pscomppars" # for our project we don't change this
@@ -40,13 +40,13 @@ order_name = "sy_dist"
 # WHERE "insert condition"
 # ORDER "insert column name to order by"
 
-ex_query = f
+ex_query = f"""
     SELECT TOP {num_of_entries}
     {column_names}
     FROM {table_name} 
     WHERE {condition}
     ORDER BY {order_name}
-    
+    """
 
 result = tap_service.search(ex_query)
 
