@@ -19,21 +19,30 @@ def search_planet_by_name(name, extras=[]):
         FROM pscomppars
         WHERE pl_name = '{name}'
         """
+    
     result = tap_service.search(ex_query).to_table()
     df = result.to_pandas().iloc[0]
+
+    extra_df = result.to_pandas()
+    for col in extra_df.columns:
+        if col not in extras:
+            extra_df.pop(col)
+
     planet = Planet(name=df['pl_name'], 
                     period=df['pl_orbper']*u.day if df['pl_orbper'] is not np.nan else None,
                     radius=df['pl_radj']*u.Rjup if df['pl_radj'] is not np.nan else None,
                     mass=df['pl_massj']*u.Mjup if df['pl_massj'] is not np.nan else None,
                     ecc=df['pl_orbeccen'] if df['pl_orbeccen'] is not np.nan else None,
-                    extra=result
+                    extra=extra_df.iloc[0]
                     )
-
-                
     return planet
 
 if __name__ == "__main__":
     planet_name = "Kepler-334 b"
-    kepler = search_planet_by_name(planet_name)
-    print(kepler.name)
+    extras = ['ra', 'dec']
+    kepler = search_planet_by_name(planet_name, extras)
+    print(kepler)
+    print(kepler.period)
     print(kepler.extra)
+    print(kepler.extra['ra'])
+
