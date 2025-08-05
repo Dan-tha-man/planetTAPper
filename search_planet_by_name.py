@@ -1,6 +1,6 @@
 import pyvo as vo
 import numpy as np
-from planetTAPper import Planet, Star
+from celestialbodies import Planet, Star
 import astropy.units as u
 
 
