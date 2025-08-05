@@ -22,13 +22,20 @@ def search_planet_by_name(name, extras=[]):
     Returns:
         object: Returns an object from the planet class
     """
-    ex_query = f"""
-        SELECT TOP 1
-        {', '.join(default_columns)}
-        {', '.join(extras)}
-        FROM pscomppars
-        WHERE pl_name = '{name}'
-        """
+    if len(extras) > 0:
+        ex_query = f"""
+            SELECT TOP 1
+            {', '.join(default_columns)}, {', '.join(extras)}
+            FROM pscomppars
+            WHERE pl_name = '{name}'
+            """
+    else:
+        ex_query = f"""
+            SELECT TOP 1
+            {', '.join(default_columns)}
+            FROM pscomppars
+            WHERE pl_name = '{name}'
+            """
     
     result = tap_service.search(ex_query).to_table()
     if len(result) == 0:
