@@ -1,18 +1,19 @@
 from dataclasses import dataclass, field
 from typing import Optional, Dict, Any
 import astropy.units as u
+from astropy.table import Table
 
 @dataclass
 class Planet:
-    name: Optional[str] = None
+    name: str
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None
     period: Optional[u.Quantity] = None
     semi_major_axis: Optional[u.Quantity] = None
     ecc: Optional[float] = None
-    star: Optional["Star"] = None
+    star: Optional['Star'] = None
 
-    extra: Dict[str, Any] = field(default_factory=dict)
+    extra: Table = field(default_factory=lambda: Table())
 
     def __getitem__(self, key):
         return getattr(self, key, self.extra.get(key))
@@ -42,7 +43,7 @@ class Planet:
 
 @dataclass
 class Star:
-    name: Optional[str] = None
+    name: str
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None
     type: Optional[str] = None
