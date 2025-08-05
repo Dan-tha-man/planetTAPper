@@ -37,7 +37,7 @@ def search_planet_by_name(name, extras=[]):
                     period=df['pl_orbper']*u.day if df['pl_orbper'] is not np.nan else None,
                     semi_major_axis=df['pl_orbsmax']*u.AU if df['pl_orbsmax'] is not np.nan else None,
                     ecc=df['pl_orbeccen'] if df['pl_orbeccen'] is not np.nan else None,
-                    star=star,
+                    host=star,
                     extra=result
                     )
 
@@ -47,5 +47,5 @@ def search_planet_by_name(name, extras=[]):
 if __name__ == "__main__":
     planet_name = "Kepler-334 b"
     kepler = search_planet_by_name(planet_name)
-    print(kepler.star.distance)
+    print(kepler.host.distance)
     print(kepler.ecc)

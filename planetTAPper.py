@@ -11,7 +11,7 @@ class Planet:
     period: Optional[u.Quantity] = None
     semi_major_axis: Optional[u.Quantity] = None
     ecc: Optional[float] = None
-    star: Optional['Star'] = None
+    host: Optional['Star'] = None
 
     extra: Table = field(default_factory=lambda: Table())
 
