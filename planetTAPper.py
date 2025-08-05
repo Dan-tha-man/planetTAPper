@@ -10,7 +10,7 @@ class Planet:
     period: Optional[u.Quantity] = None
     semi_major_axis: Optional[u.Quantity] = None
     ecc: Optional[float] = None
-    host_star: Optional[str] = None
+    star: Optional["Star"] = None
 
     extra: Dict[str, Any] = field(default_factory=dict)
 
@@ -40,5 +40,23 @@ class Planet:
         return f'{self.name}'
 
 
+@dataclass
+class Star:
+    name: Optional[str] = None
+    mass: Optional[u.Quantity] = None
+    radius: Optional[u.Quantity] = None
+    type: Optional[str] = None
+    temp: Optional[u.Quantity] = None
+    period: Optional[u.Quantity] = None
+    distance: Optional[u.Quantity] = None
+    extra: Dict[str, Any] = field(default_factory=dict)
 
+    def __getitem__(self, key):
+        return getattr(self, key, self.extra.get(key))
+    
+    def __setitem__(self, key, value):
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            self.extra[key] = value
 
