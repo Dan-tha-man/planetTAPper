@@ -1,6 +1,6 @@
 import pyvo as vo
 import numpy as np
-from planetTAPper import Planet, Star
+from celestialbodies import Planet, Star
 import astropy.units as u
 
 
@@ -36,4 +36,4 @@ if __name__ == "__main__":
     planet_name = "Kepler-334 b"
     kepler = search_planet_by_name(planet_name, ['pl_masse'])
     print(kepler.name)
-    print(kepler['pl_massb'])
+    print(kepler['pl_masse'])
