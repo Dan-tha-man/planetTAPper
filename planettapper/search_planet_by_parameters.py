@@ -22,7 +22,16 @@ def dict_to_adql_where(filters):
     return " AND ".join(clauses)
 
 
-def search_planets_by_params(params, num_entries=5):
+def search_planets_by_params(params:list, num_entries:int=5):
+    """Searches for planets by parameters and returns a table of planets that fit the constraints of the chosen params
+
+    Args:
+        params (list): the parameters used to filter to the search
+        num_entries (int): the amount of planets displayed that fit the parameter constraints
+
+    Returns:
+        result (table): a table with a specifed number of entrires that fit the constraints of the specified parameters
+    """
 
     ex_query = f'''
         SELECT TOP {num_entries}
