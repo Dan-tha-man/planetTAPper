@@ -14,8 +14,9 @@ build:
     python: "3.11"
 
   jobs:
-    pre_build:
-      - poetry install --with dev  # ensures dev deps like sphinx_rtd_theme are installed
+    post_install:
+      - pip install poetry
+      VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry install --with dev
 
 python:
   install:
