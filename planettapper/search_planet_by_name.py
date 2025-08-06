@@ -1,6 +1,6 @@
 import pyvo as vo
 import numpy as np
-from planettapper.celestialbodies import Planet, Star
+from celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
 
@@ -14,14 +14,14 @@ default_columns = ['pl_name', 'pl_orbper', 'pl_radj', 'pl_massj',
                     #All: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
 def search_planet_by_name(name, extras=[]):
-    """Searches for planet by name
+    """Searches for planet by name and returns the corresponding planet object
 
     Args:
         name: Name of the planet
-        extras: Additional properties of the planet
+        extras: Additional parameters to be included in the planet object
 
     Returns:
-        object: Returns an object from the planet class
+        planet: a planet object containing relevant planetary parameters, a host star object with it's relevant stellar parameters, and any extra parameters specified
     """
     if len(extras) > 0:
         ex_query = f"""
