@@ -17,6 +17,6 @@ or install all required packages with
 ```
 pip install -r requirements.txt
 ```
-[![A rectangular badge, half black half purple containing the text Code/Astro](https://img.shields.io/badge/Made%20at-Code/Astro-blueviolet.svg)](https://semaphorep.github.io/codeastro/)
+[![A rectangular badge, half black half purple containing the text Made at Code/Astro](https://img.shields.io/badge/Made%20at-Code/Astro-blueviolet.svg)](https://semaphorep.github.io/codeastro/)
 
-[![python](https://shields.io/badge/python-3.10-blue)
+![python](https://shields.io/badge/python-3.10-blue)
