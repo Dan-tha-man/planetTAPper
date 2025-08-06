@@ -17,11 +17,11 @@ def search_planet_by_name(name, extras=[]):
     """Searches for planet by name
 
     Args:
-        name: Name of the planet
-        extras: Additional properties of the planet
+        name (string): Name of the planet
+        extras (list): Additional properties of the planet
 
     Returns:
-        object: Returns an object from the planet class
+        object: Returns an object from the planet class with 
     """
     if len(extras) > 0:
         ex_query = f"""
@@ -38,7 +38,12 @@ def search_planet_by_name(name, extras=[]):
             WHERE pl_name = '{name}'
             """
     
-    result = tap_service.search(ex_query).to_table()
+    try:
+        result = tap_service.search(ex_query).to_table()
+    except vo.dal.exceptions.DALQueryError as error:
+        print(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
+        return None
+    
     if len(result) == 0:
         raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
     df = result.to_pandas().iloc[0]
@@ -71,6 +76,6 @@ def search_planet_by_name(name, extras=[]):
 
 if __name__ == "__main__":
     planet_name = "Kepler-334 b"
-    extras = ['ra', 'dec']
+    extras = ['dec', 'blah']
     kepler = search_planet_by_name(planet_name, extras)
     print(kepler)
