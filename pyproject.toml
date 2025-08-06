@@ -7,7 +7,7 @@ authors = [
     {name = "Gogod James"},
     {name = "Cheng Han (Hank) Tang"},
     {name = "Max"},
-    {name = "Kai"}
+    {name = "Kai Cooray"}
 ]
 readme = "README.md"
 requires-python = ">=3.9"
