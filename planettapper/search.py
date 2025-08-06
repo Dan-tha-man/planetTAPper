@@ -38,6 +38,12 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
             WHERE pl_name = '{name}'
             """
     
+    try:
+        result = tap_service.search(ex_query).to_table()
+    except vo.dal.exceptions.DALQueryError as error:
+        print(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
+        return None
+    
     result = tap_service.search(ex_query).to_table()
     if len(result) == 0:
         raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
