@@ -15,3 +15,4 @@ or install all required packages with
 ```
 pip install -r requirements.txt
 ```
+https://img.shields.io/badge/Made%20at-Code/Astro-blueviolet.svg
