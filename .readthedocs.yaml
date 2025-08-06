@@ -12,3 +12,11 @@ build:
   os: "ubuntu-24.04"
   tools:
     python: "3.11"
+
+  jobs:
+    pre_build:
+      - poetry install --with dev  # ensures dev deps like sphinx_rtd_theme are installed
+
+python:
+  install:
+    - method: poetry
