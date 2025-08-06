@@ -5,6 +5,19 @@ from astropy.table import Table
 
 @dataclass
 class Planet:
+    """
+    Represents an exoplanet and its key physical and orbital properties.
+
+    Attributes:
+        name (str): Name of the planet
+        mass (Optional[u.Quantity]): Mass of the planet (with units)
+        radius (Optional[u.Quantity]): Radius of the planet (with units)
+        period (Optional[u.Quantity]): Orbital period (with units)
+        semi_major_axis (Optional[u.Quantity]): Semi-major axis of the orbit (with units)
+        ecc (Optional[float]): Orbital eccentricity
+        host (Optional[Star]): Host star object
+        extra (table): Additional properties as an Astropy Table
+    """
     name: str
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None
@@ -72,6 +85,18 @@ class Planet:
 
 @dataclass
 class Star:
+    """
+    Represents a star and its key physical properties.
+
+    Attributes:
+        name (str): Name of the star
+        mass (Optional[u.Quantity]): Mass of the star (with units)
+        radius (Optional[u.Quantity]): Radius of the star (with units)
+        spectype (Optional[str]): Spectral type of the star
+        teff (Optional[u.Quantity]): Effective temperature (with units)
+        period (Optional[u.Quantity]): Rotation period (with units)
+        distance (Optional[u.Quantity]): Distance to the star from earth (with units)
+    """
     name: str
     mass: Optional[u.Quantity] = None
     radius: Optional[u.Quantity] = None

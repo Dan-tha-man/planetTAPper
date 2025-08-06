@@ -13,15 +13,15 @@ default_columns = ['pl_name', 'pl_orbper', 'pl_radj', 'pl_massj',
                    'st_rad', 'st_mass', 'st_rotp', 'sy_dist']
                     #All: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
-def search_planet_by_name(name, extras=[]):
+def search_planet_by_name(name:str, extras:list=[]) -> Planet:
     """Searches for planet by name and returns the corresponding planet object
 
     Args:
-        name: Name of the planet
-        extras: Additional parameters to be included in the planet object
+        name (str): Name of the planet
+        extras (array): Additional parameters to be included in the planet object
 
     Returns:
-        planet: a planet object containing relevant planetary parameters, a host star object with it's relevant stellar parameters, and any extra parameters specified
+        planet (Planet): a planet object containing relevant planetary parameters, a host star object with it's relevant stellar parameters, and any extra parameters specified
     """
     if len(extras) > 0:
         ex_query = f"""
