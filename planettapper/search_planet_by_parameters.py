@@ -1,6 +1,6 @@
 import pyvo as vo
 import numpy as np
-from celestialbodies import Planet, Star
+from planettapper.celestialbodies import Planet, Star
 import astropy.units as u
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
