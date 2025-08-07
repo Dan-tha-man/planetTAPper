@@ -2,15 +2,17 @@ import planettapper
 import pandas as pd
 
 run_search_by_name = False
-run_search_by_parameters = False
+run_search_by_parameters = True
 
 # --- Input for Search By Name ---
 object_name = 'Kepler-334 b' # could be star or planet
 
 
 # --- Input for Search By Parameters ---
-parameters = {'pl_bmassj': [1, 10], 'pl_orbper': [1, 10]}
+parameters = (dict)
 num_entries = 10
+
+
 
 if __name__ == '__main__':
 
