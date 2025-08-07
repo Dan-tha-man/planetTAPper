@@ -121,8 +121,3 @@ def search_planets_by_params(params:list, num_entries:int=5):
     result = tap_service.search(ex_query)
 
     return result.to_table()
-
-
-if __name__ == '__main__':
-    kepler = search_planet_by_name('Kepler-334 b')
-    print(kepler)
