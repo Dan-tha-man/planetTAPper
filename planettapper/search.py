@@ -100,11 +100,11 @@ def dict_to_adql_where(filters: dict):
     return " AND ".join(clauses)
 
 
-def search_planets_by_params(params:list, num_entries:int=5):
+def search_planets_by_params(params:dict, num_entries:int=5):
     """Searches for planets by parameters and returns a table of planets that fit the constraints of the chosen params
 
     Args:
-        params (list): the parameters used to filter to the search
+        params (dict): the parameters used to filter to the search, and the desired value range
         num_entries (int): the amount of planets displayed that fit the parameter constraints
 
     Returns:
