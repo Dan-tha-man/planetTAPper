@@ -89,11 +89,17 @@ def dict_to_adql_where(filters: dict):
     clauses = []
 
     for key, value in filters.items():
-        if isinstance(value, list) and len(value) == 2:
-            low, high = value
-            clauses.append(f"{key} BETWEEN {low} AND {high}")
-        elif isinstance(value, list) and len(value) == 0:
-            pass
+        if isinstance(value, list):
+            if len(value) == 0:
+                pass
+            elif all(isinstance(v, str) for v in value):
+                value_list = ", ".join(f"'{v}'" for v in value)
+                clauses.append(f"{key} IN ({value_list})")
+
+            elif len(value) == 2 and all(isinstance(v, (int, float)) for v in value):
+                low, high = value
+                clauses.append(f"{key} BETWEEN {low} AND {high}")
+            
         elif isinstance(value, (int, float)):
             clauses.append(f"{key} = {value}")
         elif isinstance(value, str):
@@ -107,7 +113,7 @@ def dict_to_adql_where(filters: dict):
         return "WHERE " + " AND ".join(clauses)
 
 
-def search_planets_by_params(params:dict, num_entries:int=5):
+def search_planets_by_params(params:dict, sort_by='pl_massj', num_entries:int=5):
     """Searches for planets by parameters and returns a table of planets that fit the constraints of the chosen params
 
     Args:
@@ -120,16 +126,15 @@ def search_planets_by_params(params:dict, num_entries:int=5):
 
     query_params = {'pl_name': [], 'pl_massj': [], 'pl_radj': []}
 
-
     query_params.update(params)
 
-    ex_query = f'''
+    ex_query = f"""
         SELECT TOP {num_entries}
         {', '.join(query_params.keys())}
         FROM pscomppars
         {dict_to_adql_where(query_params)}
-        ORDER BY {list(params.keys())[0]}
-        '''
+        ORDER BY {sort_by}
+        """
 
     result = tap_service.search(ex_query)
 
