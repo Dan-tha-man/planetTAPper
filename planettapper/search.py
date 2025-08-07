@@ -113,7 +113,7 @@ def search_planets_by_params(params:list, num_entries:int=5):
 
     ex_query = f'''
         SELECT TOP {num_entries}
-        pl_name, {', '.join(params.keys())}
+        pl_name, pl_massj, pl_radj, {', '.join(params.keys())}
         FROM pscomppars
         WHERE {dict_to_adql_where(params)}
         ORDER BY {list(params.keys())[0]}
