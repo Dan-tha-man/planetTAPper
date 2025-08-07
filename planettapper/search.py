@@ -1,5 +1,5 @@
 import pyvo as vo
-from celestialbodies import Planet, Star
+from planettapper.celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -145,7 +145,3 @@ def plot_planets(planets):
     ax.set_title('Planets')
     plt.show()
     return fig, ax
-
-if __name__ == '__main__':
-    planets = search_planets_by_params({'pl_massj':[5,10], 'pl_radj':[0,1]})
-    plot_planets(planets)
