@@ -18,7 +18,7 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
 
     Args:
         name (str): Name of the planet
-        extras (array): Additional parameters to be included in the planet object
+        extras (list): List of additional parameter strings to be included in the planet object
 
     Returns:
         planet (Planet): a planet object containing relevant planetary parameters, a host star object with it's relevant stellar parameters, and any extra parameters specified
@@ -75,7 +75,16 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
                     )
     return planet
 
-def dict_to_adql_where(filters):
+def dict_to_adql_where(filters: dict):
+    '''Takes a dictionary of {key: value} pairs of {column names: restrictions} and returns a formatted where clause for ADQL
+    
+    Args:
+        filters (dict): key/value pairs of column names and ranges or exact matches for those columns
+
+    Returns:
+        str: ADQL formatted WHERE clause
+    
+    '''
     clauses = []
 
     for key, value in filters.items():
