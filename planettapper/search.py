@@ -44,6 +44,8 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
         raise ValueError(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
     
     result = tap_service.search(ex_query).to_table()
+    if not isinstance(name, str):
+        raise ValueError('Planet name must be a string')
     if len(result) == 0:
         raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
     df = result.to_pandas().iloc[0]
@@ -87,9 +89,17 @@ def dict_to_adql_where(filters: dict):
     clauses = []
 
     for key, value in filters.items():
-        if isinstance(value, list) and len(value) == 2:
-            low, high = value
-            clauses.append(f"{key} BETWEEN {low} AND {high}")
+        if isinstance(value, list):
+            if len(value) == 0:
+                pass
+            elif all(isinstance(v, str) for v in value):
+                value_list = ", ".join(f"'{v}'" for v in value)
+                clauses.append(f"{key} IN ({value_list})")
+
+            elif len(value) == 2 and all(isinstance(v, (int, float)) for v in value):
+                low, high = value
+                clauses.append(f"{key} BETWEEN {low} AND {high}")
+            
         elif isinstance(value, (int, float)):
             clauses.append(f"{key} = {value}")
         elif isinstance(value, str):
@@ -97,53 +107,36 @@ def dict_to_adql_where(filters: dict):
         else:
             raise ValueError(f"Unsupported value type for key '{key}': {value}")
     
-    return " AND ".join(clauses)
+    if len(clauses) == 0:
+        return
+    else:
+        return "WHERE " + " AND ".join(clauses)
 
 
-def search_planets_by_params(params:list, num_entries:int=5):
+def search_planets_by_params(params:dict, sort_by='pl_massj', num_entries:int=5):
     """Searches for planets by parameters and returns a table of planets that fit the constraints of the chosen params
 
     Args:
-        params (list): the parameters used to filter to the search
+        params (dict): the parameters used to filter to the search, and the desired value range
         num_entries (int): the amount of planets displayed that fit the parameter constraints
 
     Returns:
         result (table): a table with a specifed number of entrires that fit the constraints of the specified parameters
     """
 
-    ex_query = f'''
+    query_params = {'pl_name': [], 'pl_massj': [], 'pl_radj': []}
+
+    query_params.update(params)
+
+    ex_query = f"""
         SELECT TOP {num_entries}
-        pl_name, {', '.join(params.keys())}
+        {', '.join(query_params.keys())}
         FROM pscomppars
-        WHERE {dict_to_adql_where(params)}
-        ORDER BY {list(params.keys())[0]}
-        '''
+        {dict_to_adql_where(query_params)}
+        ORDER BY {sort_by}
+        """
 
     result = tap_service.search(ex_query)
 
     return result.to_table()
-
-def plot_planets(planets):
-    """Plots planets by their Jupiter mass and Jupiter radius
- 
-    Args:
-        planets (table): Table of planets
-
-
-    Returns:
-        fig (figure): figure object of the plot
-        ax (axes): axes object of the plot
-    """
-    mass = [mass for mass in planets['pl_massj']]
-    rad = [radius for radius in planets['pl_radj']]
-    names = [names for names in planets['pl_name']]
-    fig, ax = plt.subplots(1,1)
-    ax.scatter(mass, rad)
-    for i, name in enumerate(names):
-        ax.annotate(name, (mass[i], rad[i]))
-    ax.set_xlabel('Jupiter Mass')
-    ax.set_ylabel('Jupiter Radius')
-    ax.set_title('Planets')
-    plt.show()
-    return fig, ax
 

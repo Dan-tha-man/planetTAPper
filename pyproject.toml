@@ -1,6 +1,6 @@
 [project]
 name = "planettapper"
-version = "0.0.5"
+version = "0.0.6"
 description = ""
 authors = [
     {name = "Danny Levinstein"},
@@ -24,6 +24,7 @@ ipykernel = "^6.30.1"
 sphinx = "^8.2.3"
 sphinx-autodoc-typehints = "^3.2.0"
 sphinx-rtd-theme = "^3.0.2"
+pytest = "^8.4.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
