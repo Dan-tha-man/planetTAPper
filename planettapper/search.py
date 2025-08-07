@@ -90,6 +90,8 @@ def dict_to_adql_where(filters: dict):
         if isinstance(value, list) and len(value) == 2:
             low, high = value
             clauses.append(f"{key} BETWEEN {low} AND {high}")
+        elif isinstance(value, list) and len(value) == 0:
+            pass
         elif isinstance(value, (int, float)):
             clauses.append(f"{key} = {value}")
         elif isinstance(value, str):
@@ -113,7 +115,7 @@ def search_planets_by_params(params:dict, num_entries:int=5):
 
     ex_query = f'''
         SELECT TOP {num_entries}
-        pl_name, {', '.join(params.keys())}
+        pl_name, pl_massj, pl_radj, {', '.join(params.keys())}
         FROM pscomppars
         WHERE {dict_to_adql_where(params)}
         ORDER BY {list(params.keys())[0]}
