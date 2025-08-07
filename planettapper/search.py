@@ -99,7 +99,10 @@ def dict_to_adql_where(filters: dict):
         else:
             raise ValueError(f"Unsupported value type for key '{key}': {value}")
     
-    return " AND ".join(clauses)
+    if len(clauses) == 0:
+        return
+    else:
+        return "WHERE " + " AND ".join(clauses)
 
 
 def search_planets_by_params(params:dict, num_entries:int=5):
@@ -113,11 +116,16 @@ def search_planets_by_params(params:dict, num_entries:int=5):
         result (table): a table with a specifed number of entrires that fit the constraints of the specified parameters
     """
 
+    query_params = {'pl_name': [], 'pl_massj': [], 'pl_radj': []}
+
+
+    query_params.update(params)
+
     ex_query = f'''
         SELECT TOP {num_entries}
-        pl_name, pl_massj, pl_radj, {', '.join(params.keys())}
+        {', '.join(query_params.keys())}
         FROM pscomppars
-        WHERE {dict_to_adql_where(params)}
+        {dict_to_adql_where(query_params)}
         ORDER BY {list(params.keys())[0]}
         '''
 
