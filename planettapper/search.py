@@ -1,6 +1,5 @@
 import pyvo as vo
-import numpy as np
-from celestialbodies import Planet, Star
+from planettapper.celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
 
@@ -18,7 +17,7 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
 
     Args:
         name (str): Name of the planet
-        extras (array): Additional parameters to be included in the planet object
+        extras (list): List of additional parameter strings to be included in the planet object
 
     Returns:
         planet (Planet): a planet object containing relevant planetary parameters, a host star object with it's relevant stellar parameters, and any extra parameters specified
@@ -41,8 +40,7 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
     try:
         result = tap_service.search(ex_query).to_table()
     except vo.dal.exceptions.DALQueryError as error:
-        print(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
-        return None
+        raise ValueError(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
     
     result = tap_service.search(ex_query).to_table()
     if len(result) == 0:
@@ -75,7 +73,16 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
                     )
     return planet
 
-def dict_to_adql_where(filters):
+def dict_to_adql_where(filters: dict):
+    '''Takes a dictionary of {key: value} pairs of {column names: restrictions} and returns a formatted where clause for ADQL
+    
+    Args:
+        filters (dict): key/value pairs of column names and ranges or exact matches for those columns
+
+    Returns:
+        str: ADQL formatted WHERE clause
+    
+    '''
     clauses = []
 
     for key, value in filters.items():

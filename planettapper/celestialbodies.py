@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Any
+from typing import Optional
 import astropy.units as u
 from astropy.table import Table
 
