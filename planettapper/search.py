@@ -1,7 +1,8 @@
 import pyvo as vo
-from planettapper.celestialbodies import Planet, Star
+from celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
@@ -122,7 +123,19 @@ def search_planets_by_params(params:list, num_entries:int=5):
 
     return result.to_table()
 
+def plot_planets(planets):
+    mass = [mass for mass in planets['pl_massj']]
+    rad = [radius for radius in planets['pl_radj']]
+    names = [names for names in planets['pl_name']]
+    fig, ax = plt.subplots(1,1)
+    ax.scatter(mass, rad)
+    for i, name in enumerate(names):
+        ax.annotate(name, (mass[i], rad[i]))
+    ax.set_xlabel('Jupiter Mass')
+    ax.set_ylabel('Jupiter Radius')
+    ax.set_title('Planets')
+    plt.show()
 
 if __name__ == '__main__':
-    kepler = search_planet_by_name('Kepler-334 b')
-    print(kepler)
+    planets = search_planets_by_params({'pl_massj':[5,10], 'pl_radj':[0,1]})
+    plot_planets(planets)
