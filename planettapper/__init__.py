@@ -1,1 +1,1 @@
-from .search import search_planet_by_name, search_planets_by_params
+from .search import search_planet_by_name, search_planets_by_params, plot_planets
