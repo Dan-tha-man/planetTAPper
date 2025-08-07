@@ -5,7 +5,7 @@ import planettapper
 import pandas as pd
 import matplotlib.pyplot as plt
 
-run_search_by_name = False
+run_search_by_name = True
 run_search_by_parameters = True
 enable_plot = False
 
