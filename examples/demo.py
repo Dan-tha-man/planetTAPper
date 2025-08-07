@@ -10,7 +10,7 @@ run_search_by_parameters = True
 enable_plot = False
 
 # --- Input for Search By Name ---
-object_name = 'Kepler-334 b' # could be star or planet
+object_name = 'Kepler-334 b' # could be star or planet (Max's choice)
 # SWEEPS-11 b (Hank's choice)
 
 
