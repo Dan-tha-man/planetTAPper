@@ -124,6 +124,15 @@ def search_planets_by_params(params:list, num_entries:int=5):
     return result.to_table()
 
 def plot_planets(planets):
+    """Plots planets by their Jupiter mass and Jupiter radius
+ 
+    Args:
+        planets (table): Table of planets
+
+    Returns:
+        fig (figure): figure object of the plot
+        ax (axes): axes object of the plot
+    """
     mass = [mass for mass in planets['pl_massj']]
     rad = [radius for radius in planets['pl_radj']]
     names = [names for names in planets['pl_name']]
@@ -135,6 +144,7 @@ def plot_planets(planets):
     ax.set_ylabel('Jupiter Radius')
     ax.set_title('Planets')
     plt.show()
+    return fig, ax
 
 if __name__ == '__main__':
     planets = search_planets_by_params({'pl_massj':[5,10], 'pl_radj':[0,1]})
