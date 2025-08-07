@@ -21,4 +21,4 @@ pip install -r requirements.txt
 
 ![python](https://shields.io/badge/python-3.10-blue)
 
-![python](https://img.shields.io/badge/UC%20Irvine-FFF200)
+![python](https://img.shields.io/badge/UC-Irvine-yellow)
