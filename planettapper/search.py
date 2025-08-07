@@ -8,7 +8,7 @@ import pandas as pd
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 
 #Column names are planet properties:
-default_columns = ['pl_name', 'pl_orbper', 'pl_radj', 'pl_massj', 
+default_columns = ['pl_name', 'pl_bmassj', 'pl_orbper', 'pl_radj', 'pl_massj', 
                    'pl_orbeccen', 'pl_orbsmax', 'hostname', 'st_spectype', 'st_teff', 
                    'st_rad', 'st_mass', 'st_rotp', 'sy_dist']
                     #All: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
@@ -65,7 +65,7 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
                 )
 
     planet = Planet(name=df['pl_name'], 
-                    mass=df['pl_massj']*u.Mjup if not pd.isna(df['pl_massj']) else None,
+                    mass=df['pl_massj']*u.Mjup if not pd.isna(df['pl_massj']) else df['pl_bmassj']*u.Mjup,
                     radius=df['pl_radj']*u.Rjup if not pd.isna(df['pl_radj']) else None,
                     period=df['pl_orbper']*u.day if not pd.isna(df['pl_orbper']) else None,
                     semi_major_axis=df['pl_orbsmax']*u.AU if not pd.isna(df['pl_orbsmax']) else None,
@@ -117,5 +117,5 @@ def search_planets_by_params(params:list, num_entries:int=5):
 
 
 if __name__ == '__main__':
-    params = {'pl_massj':[5,10], 'sy_dist':[1,100]}
-    print(search_planets_by_params(params))
+    kepler = search_planet_by_name('Kepler-334 b')
+    print(kepler)
