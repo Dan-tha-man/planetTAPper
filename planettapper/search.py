@@ -44,7 +44,7 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
         raise ValueError(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
     
     result = tap_service.search(ex_query).to_table()
-    if name is not str:
+    if not isinstance(name, str):
         raise ValueError('Planet name must be a string')
     if len(result) == 0:
         raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
