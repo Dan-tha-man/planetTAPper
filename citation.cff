@@ -7,7 +7,7 @@ authors:
 - Max Abrina
 - Kai Cooray
 title: "planetTAPper package"
-version: 0.06
+version: 0.0.6
 doi: 10.5281/zenodo.16755131
 date-released: 2025-08-07
 url: "https://github.com/Dan-tha-man/planetTAPper"
