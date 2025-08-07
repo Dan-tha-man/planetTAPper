@@ -1,6 +1,6 @@
 import pyvo as vo
 import numpy as np
-from celestialbodies import Planet, Star
+from planettapper.celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
 
@@ -41,8 +41,7 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
     try:
         result = tap_service.search(ex_query).to_table()
     except vo.dal.exceptions.DALQueryError as error:
-        print(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
-        return None
+        raise ValueError(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
     
     result = tap_service.search(ex_query).to_table()
     if len(result) == 0:
