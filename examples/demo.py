@@ -13,6 +13,7 @@ enable_plot = False
 object_name = 'Kepler-334 b' # could be star or planet
 # SWEEPS-11 b (Hank's choice)
 # J1470B (Kai's Choice)
+# PDS 70 c (Danny's Choice)
 
 
 # --- Input for Search By Parameters ---
