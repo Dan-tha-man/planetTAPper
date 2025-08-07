@@ -1,5 +1,4 @@
 import pyvo as vo
-import numpy as np
 from planettapper.celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
