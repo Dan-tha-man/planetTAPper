@@ -12,6 +12,7 @@ enable_plot = False
 # --- Input for Search By Name ---
 object_name = 'Kepler-334 b' # could be star or planet
 # SWEEPS-11 b (Hank's choice)
+# J1470B (Kai's Choice)
 
 
 # --- Input for Search By Parameters ---
