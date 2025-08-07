@@ -55,20 +55,20 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
 
 
     star = Star(name=df['hostname'],
-                mass=df['st_mass']*u.Msun if not pd.isna(df['st_mass']) else None,
-                radius=df['st_rad']*u.Rsun if not pd.isna(df['st_rad']) else None,
-                spectype=df['st_spectype'],
-                teff=df['st_teff']*u.K if not pd.isna(df['st_teff']) else None,
-                period=df['st_rotp']*u.day if not pd.isna(df['st_rotp']) else None,
-                distance=df['sy_dist']*u.pc if not pd.isna(df['sy_dist']) else None
+                mass=df['st_mass']*u.Msun if not pd.isna(df['st_mass']) and (df['st_mass'] not in [' ', '']) else None,
+                radius=df['st_rad']*u.Rsun if not pd.isna(df['st_rad']) and (df['st_rad'] not in [' ', '']) else None,
+                spectype=df['st_spectype'] if not pd.isna(df['st_spectype']) and (df['st_spectype'] not in [' ', '']) else None,
+                teff=df['st_teff']*u.K if not pd.isna(df['st_teff']) and (df['st_teff'] not in [' ', '']) else None,
+                period=df['st_rotp']*u.day if not pd.isna(df['st_rotp']) and (df['st_rotp'] not in [' ', '']) else None,
+                distance=df['sy_dist']*u.pc if not pd.isna(df['sy_dist']) and (df['sy_dist'] not in [' ', '']) else None
                 )
 
     planet = Planet(name=df['pl_name'], 
-                    mass=df['pl_massj']*u.Mjup if not pd.isna(df['pl_massj']) else df['pl_bmassj']*u.Mjup,
-                    radius=df['pl_radj']*u.Rjup if not pd.isna(df['pl_radj']) else None,
-                    period=df['pl_orbper']*u.day if not pd.isna(df['pl_orbper']) else None,
-                    semi_major_axis=df['pl_orbsmax']*u.AU if not pd.isna(df['pl_orbsmax']) else None,
-                    ecc=df['pl_orbeccen'] if not pd.isna(df['pl_orbeccen']) else None,
+                    mass=df['pl_massj']*u.Mjup if not pd.isna(df['pl_massj']) and (df['pl_massj'] not in [' ', '']) else df['pl_bmassj']*u.Mjup,
+                    radius=df['pl_radj']*u.Rjup if not pd.isna(df['pl_radj']) and (df['pl_radj'] not in [' ', '']) else None,
+                    period=df['pl_orbper']*u.day if not pd.isna(df['pl_orbper']) and (df['pl_orbper'] not in [' ', '']) else None,
+                    semi_major_axis=df['pl_orbsmax']*u.AU if not pd.isna(df['pl_orbsmax']) and (df['pl_orbper'] not in [' ', '']) else None,
+                    ecc=df['pl_orbeccen'] if not pd.isna(df['pl_orbeccen']) and (df['pl_orbeccen'] not in [' ', '']) else None,
                     host=star,
                     extra=extra_df.iloc[0]
                     )
@@ -129,6 +129,7 @@ def plot_planets(planets):
     Args:
         planets (table): Table of planets
 
+
     Returns:
         fig (figure): figure object of the plot
         ax (axes): axes object of the plot
@@ -145,3 +146,4 @@ def plot_planets(planets):
     ax.set_title('Planets')
     plt.show()
     return fig, ax
+
