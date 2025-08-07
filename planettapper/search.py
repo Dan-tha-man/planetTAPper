@@ -90,6 +90,8 @@ def dict_to_adql_where(filters: dict):
         if isinstance(value, list) and len(value) == 2:
             low, high = value
             clauses.append(f"{key} BETWEEN {low} AND {high}")
+        elif isinstance(value, list) and len(value) == 0:
+            pass
         elif isinstance(value, (int, float)):
             clauses.append(f"{key} = {value}")
         elif isinstance(value, str):
