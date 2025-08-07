@@ -2,8 +2,6 @@ import pyvo as vo
 from .celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
-import matplotlib.pyplot as plt
-
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 
