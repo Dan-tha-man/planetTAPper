@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../planettapper")
+
 import planettapper
 import pandas as pd
 import matplotlib.pyplot as plt
