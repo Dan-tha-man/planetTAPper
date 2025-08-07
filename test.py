@@ -10,7 +10,7 @@ object_name = 'Kepler-334 b' # could be star or planet
 
 
 # --- Input for Search By Parameters ---
-parameters = (dict)
+parameters = dict()
 num_entries = 10
 
 
