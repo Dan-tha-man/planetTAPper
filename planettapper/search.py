@@ -4,12 +4,49 @@ import astropy.units as u
 import pandas as pd
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
-
 #Column names are planet properties:
 default_columns = ['pl_name', 'pl_bmassj', 'pl_orbper', 'pl_radj', 'pl_massj', 
-                   'pl_orbeccen', 'pl_orbsmax', 'hostname', 'st_spectype', 'st_teff', 
-                   'st_rad', 'st_mass', 'st_rotp', 'sy_dist']
+                'pl_orbeccen', 'pl_orbsmax', 'hostname', 'st_spectype', 'st_teff', 
+                'st_rad', 'st_mass', 'st_rotp', 'sy_dist']
                     #All: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
+
+
+def search_planets_by_star(star_name: str, extras:list=[], num_entries=10):
+    """Searches for a star by name and returns a table of the corresponding planets
+
+    Args:
+        star_name (str): name of the star
+        extras (list): List of additional parameter strings to be included in the search
+    
+    Returns:
+        result (table): a table with all planets up to specifed number of entrires
+    """
+
+    if not isinstance(star_name, str):
+        raise ValueError('Planet name must be a string')
+
+    if len(extras) > 0:
+        ex_query = f"""
+            SELECT TOP {num_entries}
+            {', '.join(default_columns)}, {', '.join(extras)}
+            FROM pscomppars
+            WHERE hostname = '{star_name}'
+            """
+    else:
+        ex_query = f"""
+            SELECT TOP {num_entries}
+            {', '.join(default_columns)}
+            FROM pscomppars
+            WHERE hostname = '{star_name}'
+            """
+
+    try:
+        result = tap_service.search(ex_query).to_table()
+    except vo.dal.exceptions.DALQueryError as error:
+        raise ValueError(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
+
+    return result
+
 
 def search_planet_by_name(name:str, extras:list=[]) -> Planet:
     """Searches for planet by name and returns the corresponding planet object
@@ -21,6 +58,10 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
     Returns:
         planet (Planet): a planet object containing relevant planetary parameters, a host star object with it's relevant stellar parameters, and any extra parameters specified
     """
+    
+    if not isinstance(name, str):
+        raise ValueError('Planet name must be a string')
+    
     if len(extras) > 0:
         ex_query = f"""
             SELECT TOP 1
@@ -41,9 +82,6 @@ def search_planet_by_name(name:str, extras:list=[]) -> Planet:
     except vo.dal.exceptions.DALQueryError as error:
         raise ValueError(f"ERROR {error.reason[11:]} column. Refer to https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html for list of valid columns")
     
-    result = tap_service.search(ex_query).to_table()
-    if not isinstance(name, str):
-        raise ValueError('Planet name must be a string')
     if len(result) == 0:
         raise ValueError(f'Planet "{name}" not found in database. Try putting "-" instead of spaces?')
     df = result.to_pandas().iloc[0]

@@ -10,11 +10,11 @@ run_search_by_parameters = True
 enable_plot = False
 
 # --- Input for Search By Name ---
-object_name = 'Kepler-334 b' # could be star or planet (Max's choice)
-# SWEEPS-11 b (Hank's choice)
-# Barnard b (Gogod's choice)
-# J1470B (Kai's Choice)
-# PDS 70 c (Danny's Choice)
+# object_name = 'Kepler-334 b' # could be star or planet (Max's choice)
+# object_name = 'SWEEPS-11 b' # (Hank's choice)
+# object_name = 'Barnard b' # (Gogod's choice)
+# object_name = 'J1470B' # (Kai's Choice)
+object_name = 'PDS 70 c' # (Danny's Choice)
 
 
 # --- Input for Search By Parameters ---
