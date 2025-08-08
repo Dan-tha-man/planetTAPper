@@ -105,12 +105,9 @@ class Star:
     period: Optional[u.Quantity] = None
     distance: Optional[u.Quantity] = None
 
-    def __getitem__(self, key):
-        return getattr(self, key, self.extra.get(key))
-    
     def __setitem__(self, key, value):
         if hasattr(self, key):
             setattr(self, key, value)
         else:
-            self.extra[key] = value
+            raise KeyError(f'{key} is not a valid attribute')
 

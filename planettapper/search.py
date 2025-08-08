@@ -2,16 +2,28 @@ import pyvo as vo
 from planettapper.celestialbodies import Planet, Star
 import astropy.units as u
 import pandas as pd
+from astropy.table import QTable
 
 tap_service = vo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
 #Column names are planet properties:
-default_columns = ['pl_name', 'pl_bmassj', 'pl_orbper', 'pl_radj', 'pl_massj', 
-                'pl_orbeccen', 'pl_orbsmax', 'hostname', 'st_spectype', 'st_teff', 
+
+default_planet_columns = ['pl_name', 'pl_orbper', 'pl_radj', 'pl_massj', 
+                'pl_orbeccen', 'pl_orbsmax']
+
+default_star_columns = ['hostname', 'st_spectype', 'st_teff', 
                 'st_rad', 'st_mass', 'st_rotp', 'sy_dist']
+
+default_columns = default_planet_columns + default_star_columns
+
+pscomppars_to_planettapper = {'pl_name': ['name', None], 'pl_massj': ['mass', u.Mjup], 
+                              'pl_orbper': ['period', u.day], 'pl_radj': ['radius', u.Rjup], 'pl_orbeccen': ['ecc', None], 
+                              'pl_orbsmax': ['semi_major_axis', u.AU], 'hostname': ['name', None], 'st_spectype': ['spectype', None],
+                              'st_teff': ['teff', u.K], 'st_rad': ['radius', u.Rsun], 'st_mass': ['mass', u.Msun], 'st_rotp': ['period', u.day],
+                              'sy_dist': ['distance', u.pc]}
                     #All: https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html
 
 
-def search_planets_by_star(star_name: str, extras:list=[], num_entries=10):
+def search_planets_by_star(star_name: str, extras:list=['pl_bmassj'], num_entries=10):
     """Searches for a star by name and returns a table of the corresponding planets
 
     Args:
@@ -175,4 +187,46 @@ def search_planets_by_params(params:dict, sort_by='pl_massj', num_entries:int=5)
     result = tap_service.search(ex_query)
 
     return result.to_table()
+
+
+def planets_from_table(table):
+
+    # TODO Incorporate the extras in the planet objects
+    # TODO Set values to nan if it's not a number
+
+    for col in table.keys():
+        if col in pscomppars_to_planettapper.keys():
+            table[col].unit = pscomppars_to_planettapper[col][1]
+
+    extras = [col for col in table.keys() if col not in default_columns]
+
+    star_params = [col for col in default_star_columns if col in table.keys()]
+    planet_params = [col for col in default_planet_columns if col in table.keys()]
+    
+    star_table = table[star_params].copy()
+    planet_table = table[planet_params].copy()    
+
+    for old,[new, units] in pscomppars_to_planettapper.items():
+        if old in star_table.keys():
+            star_table.unit = units
+            star_table.rename_column(old,new)
+        if old in planet_table.keys():
+            planet_table.unit = units
+            planet_table.rename_column(old,new)
+    
+    star_table = QTable(star_table)
+    planet_table = QTable(planet_table)
+
+    star_list = [dict(row) for row in star_table]
+    planet_list = [dict(row) for row in planet_table]
+
+    stars = [Star(**kwargs) for kwargs in star_list]
+    for planet, star in zip(planet_list, stars):
+        planet['host'] = star
+
+    return [Planet(**kwargs) for kwargs in planet_list]
+        
+
+
+            
 
