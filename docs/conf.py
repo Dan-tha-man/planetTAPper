@@ -15,7 +15,7 @@ project = 'planetTAPper'
 copyright = '2025, Danny Levinstein, Gogod James, Cheng Han (Hank) Tang, Max Abrina, Kai Cooray'
 author = 'Danny Levinstein, Gogod James, Cheng Han (Hank) Tang, Max Abrina, Kai Cooray'
 root_doc = 'index'
-release = '0.1.1'
+release = '0.1.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
